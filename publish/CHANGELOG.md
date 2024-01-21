@@ -1,3 +1,6 @@
+- v1.5
+  - Fixes compatibility issue with RRR mod.
+
 - v1.4
   - Updated for the new Expand World Data features.
 
