@@ -18,6 +18,8 @@ The file `expand_world/expand_spawns.yaml` is created when loading a world.
 
 ### expand_spawns.yaml
 
+Note: All distances are in meters, and don't scale up with the world size. For bigger worlds you may need to increase some of the values.
+
 - prefab: Name of the object to spawn.
   - Any [object](https://valheim.fandom.com/wiki/Item_IDs) is valid, not just creatures.
 - name: Identifier for this entry, only needed for mod compatibility.
