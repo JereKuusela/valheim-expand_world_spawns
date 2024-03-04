@@ -1,6 +1,6 @@
 {
   "name": "Expand_World_Spawns",
-  "version_number": "1.5.0",
+  "version_number": "1.6.0",
   "website_url": "https://github.com/JereKuusela/valheim-expand_world_spawns",
   "description": "Allows changing spawns.",
   "dependencies": [

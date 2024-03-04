@@ -10,6 +10,7 @@ public class Loader
 {
   public static Dictionary<SpawnSystem.SpawnData, ZDOData?> Data = new();
   public static Dictionary<SpawnSystem.SpawnData, List<BlueprintObject>> Objects = [];
+  public static Dictionary<SpawnSystem.SpawnData, Data> ExtraData = [];
   private static readonly int HashFaction = "faction".GetStableHashCode();
 
   public static SpawnSystem.SpawnData FromData(Data data)
@@ -17,6 +18,7 @@ public class Loader
     SpawnSystem.SpawnData spawn = new()
     {
       m_prefab = DataManager.ToPrefab(data.prefab),
+      m_name = data.name,
       m_enabled = data.enabled,
       m_biome = DataManager.ToBiomes(data.biome),
       m_biomeArea = DataManager.ToBiomeAreas(data.biomeArea),
@@ -74,6 +76,10 @@ public class Loader
         Parse.Float(split, 4, 1f)
       )).ToList();
     }
+    if (data.minDistance != 0f || data.maxDistance != 0f)
+    {
+      ExtraData[spawn] = data;
+    }
     return spawn;
   }
   public static Data ToData(SpawnSystem.SpawnData spawn)
@@ -81,6 +87,7 @@ public class Loader
     Data data = new()
     {
       prefab = spawn.m_prefab.name,
+      name = spawn.m_name,
       enabled = spawn.m_enabled,
       biome = DataManager.FromBiomes(spawn.m_biome),
       biomeArea = DataManager.FromBiomeAreas(spawn.m_biomeArea),

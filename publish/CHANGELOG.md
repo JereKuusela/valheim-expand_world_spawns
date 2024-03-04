@@ -1,3 +1,8 @@
+- v1.6
+  - Adds a new field `name` to improve mod compatibility.
+  - Adds new fields `minDistance` and `maxDistance` to limit the spawn distance from the world center.
+  - Changes the field `enabled` to be always included in the generated config file.
+
 - v1.5
   - Fixes compatibility issue with RRR mod.
 
