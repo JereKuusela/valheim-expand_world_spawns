@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ExpandWorldData;
 using HarmonyLib;
+using Service;
 using UnityEngine;
 
 namespace ExpandWorld.Spawn;
@@ -11,7 +12,7 @@ namespace ExpandWorld.Spawn;
 public class Manager
 {
   public static string FileName = "expand_spawns.yaml";
-  public static string FilePath = Path.Combine(EWD.YamlDirectory, FileName);
+  public static string FilePath = Path.Combine(Yaml.Directory, FileName);
   public static string Pattern = "expand_spawns*.yaml";
 
   public static bool IsValid(SpawnSystem.SpawnData spawn) => spawn.m_prefab;
@@ -20,7 +21,7 @@ public class Manager
     var spawnSystem = SpawnSystem.m_instances.FirstOrDefault();
     if (spawnSystem == null) return "";
     var spawns = spawnSystem.m_spawnLists.SelectMany(s => s.m_spawners);
-    var yaml = DataManager.Serializer().Serialize(spawns.Select(Loader.ToData).ToList());
+    var yaml = Yaml.Serializer().Serialize(spawns.Select(Loader.ToData).ToList());
     File.WriteAllText(FilePath, yaml);
     return yaml;
   }
@@ -54,7 +55,7 @@ public class Manager
     if (yaml == "") return;
     try
     {
-      var data = DataManager.Deserialize<Data>(yaml, FileName)
+      var data = Yaml.Deserialize<Data>(yaml, FileName)
         .Select(Loader.FromData).Where(IsValid).ToList();
       if (data.Count == 0)
       {
@@ -74,7 +75,7 @@ public class Manager
 
   public static void SetupWatcher()
   {
-    DataManager.SetupWatcher(Pattern, FromFile);
+    Yaml.SetupWatcher(Pattern, FromFile);
   }
 
 
