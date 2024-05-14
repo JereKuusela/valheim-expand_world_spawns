@@ -121,6 +121,7 @@ public class HandleSpawnData
   }
 }
 
+
 [HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.IsSpawnPointGood))]
 public class IsSpawnPointGood
 {
@@ -135,5 +136,68 @@ public class IsSpawnPointGood
       if (data.maxDistance > 0f && distance > data.maxDistance) return false;
     }
     return result;
+  }
+}
+
+[HarmonyPatch(typeof(ZoneSystem), nameof(ZoneSystem.RPC_SetGlobalKey))]
+public class RPC_SetGlobalKey
+{
+  // This is called on creature death.
+  // Adds support for incrementing the key value when "key value" is used.
+  static bool Prefix(ZoneSystem __instance, string name)
+  {
+    var split = name.Trim().Split(' ');
+    if (split.Length < 2) return true;
+    var key = split[0].ToLower();
+    if (!int.TryParse(split[1], out var value)) return true;
+    if (__instance.m_globalKeysValues.TryGetValue(key, out var prev))
+    {
+      if (int.TryParse(prev, out var prevValue))
+        __instance.m_globalKeysValues[key] = (prevValue + value).ToString();
+      else
+        __instance.m_globalKeysValues[key] = split[1];
+    }
+    else
+    {
+      __instance.m_globalKeys.Add(key);
+      __instance.m_globalKeysValues.Add(key, split[1]);
+    }
+    __instance.SendGlobalKeys(ZRoutedRpc.Everybody);
+    return false;
+  }
+}
+
+[HarmonyPatch(typeof(ZoneSystem), nameof(ZoneSystem.GetGlobalKey), typeof(string))]
+public class GetGlobalKey
+{
+  // This is called by the spawn check.
+  // Adds support for checking that the key exceeds the required value.
+  static bool Prefix(ZoneSystem __instance, string name, ref bool __result)
+  {
+    var split = name.Trim().Split(' ');
+    if (split.Length < 2) return true;
+    if (!int.TryParse(split[1], out var value)) return true;
+    __result = HasKey(__instance, split[0].ToLower(), value);
+    return false;
+  }
+
+  static bool HasKey(ZoneSystem zs, string requiredKey, int requiredValue)
+  {
+    if (!zs.m_globalKeysValues.TryGetValue(requiredKey, out var strValue)) return false;
+    if (!int.TryParse(strValue, out var value)) return false;
+    return value >= requiredValue;
+  }
+}
+
+[HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.Spawn))]
+public class Spawn
+{
+  // After spawn, consume the required amount of global key.
+  static void Postfix(SpawnSystem.SpawnData critter)
+  {
+    var split = critter.m_requiredGlobalKey.Trim().Split(' ');
+    if (split.Length < 2) return;
+    if (!int.TryParse(split[1], out var amount)) return;
+    ZoneSystem.instance.SetGlobalKey($"{split[0]} {-amount}");
   }
 }

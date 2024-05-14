@@ -1,3 +1,8 @@
+- v1.8
+  - Adds new fields for spawns.
+  - Adds global key value support to the field `requiredGlobalKey`.
+  - Fixed for the new game version.
+
 - v1.7
   - Updated for the new Expand World Data features.
 
