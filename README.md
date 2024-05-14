@@ -53,10 +53,15 @@ Note: All distances are in meters, and don't scale up with the world size. For b
 - maxTilt (default: `35` degrees): Maximum terrain angle.
 - inForest (default: `true`): Enabled in forests.
 - outsideForest (default: `true`): Enabled outside forests.
+- canSpawnCloseToPlayers (default: `false`): If set to true, spawnRadiusMin is ignored.
+- insidePlayerBase (default: `false`): If set to true, player base protection is ignored.
+- inLava (default: `false`): If set to true, can spawn in lava.
+- outsideLava (default: `true`): If set to false, can only spawn in lava.
 - minOceanDepth (default: `0` meters): Minimum ocean depth.
 - maxOceanDepth (default: `0` meters): Maximum ocean depth.
 - huntPlayer (default: `false`): Spawned creatures are more aggressive.
 - groundOffset (default: `0.5` meters): Spawns above the ground.
+- groundOffsetRandom (default: `0` meters): Maximum offset from the ground.
 - levelUpMinCenterDistance (default: `0` meters): Distance from the world center to enable higher creature levels. This is not scaled with the world size.
 - overrideLevelupChance (default: `-1` percent): Chance per level up (from the default 10%).
 - faction: Name of the faction. Requires using Expand World Factions.
