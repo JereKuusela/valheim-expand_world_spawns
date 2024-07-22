@@ -64,7 +64,10 @@ public class Loader
     }
     if (data.faction != "")
     {
-      var factionData = new DataEntry();
+      var factionData = new DataEntry
+      {
+        Strings = []
+      };
       factionData.Strings[HashFaction] = DataValue.Simple(data.faction);
       if (Data.ContainsKey(spawn))
         Data[spawn] = DataHelper.Merge(Data[spawn], factionData);

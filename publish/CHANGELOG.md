@@ -1,3 +1,6 @@
+- v1.9
+  - Fixes the field `faction` not working.
+
 - v1.8
   - Adds new fields for spawns.
   - Adds global key value support to the field `requiredGlobalKey`.
