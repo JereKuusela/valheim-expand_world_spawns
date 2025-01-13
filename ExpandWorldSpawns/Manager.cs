@@ -35,7 +35,7 @@ public class Manager
   public static void FromFile()
   {
     if (Helper.IsClient()) return;
-    var yaml = DataManager.Read(Pattern);
+    var yaml = DataManager.Read<Data, SpawnSystem.SpawnData>(Pattern, Loader.FromData);
     Configuration.valueSpawnData.Value = yaml;
     Set(yaml);
   }
@@ -55,8 +55,8 @@ public class Manager
     if (yaml == "") return;
     try
     {
-      var data = Yaml.Deserialize<Data>(yaml, FileName)
-        .Select(Loader.FromData).Where(IsValid).ToList();
+      var data = Yaml.Deserialize<Data>(yaml, "Spawns")
+        .Select(d => Loader.FromData(d, "Spawns")).Where(IsValid).ToList();
       if (data.Count == 0)
       {
         EWS.LogWarning($"Failed to load any spawn data.");

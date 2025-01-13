@@ -5,12 +5,12 @@ using HarmonyLib;
 using Service;
 namespace ExpandWorld;
 [BepInPlugin(GUID, NAME, VERSION)]
-[BepInDependency("expand_world_data", "1.27")]
+[BepInDependency("expand_world_data", "1.50")]
 public class EWS : BaseUnityPlugin
 {
   public const string GUID = "expand_world_spawns";
   public const string NAME = "Expand World Spawns";
-  public const string VERSION = "1.9";
+  public const string VERSION = "1.10";
 #nullable disable
   public static ManualLogSource Log;
 #nullable enable

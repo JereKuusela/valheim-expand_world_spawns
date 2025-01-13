@@ -1,3 +1,6 @@
+- v1.10
+  - Improves the config loading to show the actual file and row numbers when an error occurs.
+
 - v1.9
   - Fixes the field `faction` not working.
 

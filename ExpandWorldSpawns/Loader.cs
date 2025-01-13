@@ -14,15 +14,15 @@ public class Loader
   public static Dictionary<SpawnSystem.SpawnData, Data> ExtraData = [];
   private static readonly int HashFaction = "faction".GetStableHashCode();
 
-  public static SpawnSystem.SpawnData FromData(Data data)
+  public static SpawnSystem.SpawnData FromData(Data data, string fileName)
   {
     SpawnSystem.SpawnData spawn = new()
     {
-      m_prefab = DataManager.ToPrefab(data.prefab),
+      m_prefab = DataManager.ToPrefab(data.prefab, fileName),
       m_name = data.name,
       m_enabled = data.enabled,
-      m_biome = DataManager.ToBiomes(data.biome),
-      m_biomeArea = DataManager.ToBiomeAreas(data.biomeArea),
+      m_biome = DataManager.ToBiomes(data.biome, fileName),
+      m_biomeArea = DataManager.ToBiomeAreas(data.biomeArea, fileName),
       m_maxSpawned = data.maxSpawned,
       m_spawnInterval = data.spawnInterval,
       m_spawnChance = data.spawnChance,
@@ -60,7 +60,7 @@ public class Loader
       spawn.m_minAltitude = spawn.m_maxAltitude > 0f ? 0f : -1000f;
     if (data.data != "")
     {
-      Data[spawn] = DataHelper.Get(data.data);
+      Data[spawn] = DataHelper.Get(data.data, fileName);
     }
     if (data.faction != "")
     {
@@ -81,7 +81,7 @@ public class Loader
         Parse.VectorXZY(split, 1),
         Quaternion.identity,
         Vector3.one,
-        DataHelper.Get(split.Length > 5 ? split[5] : ""),
+        DataHelper.Get(split.Length > 5 ? split[5] : "", fileName),
         Parse.Float(split, 4, 1f)
       )).ToList();
     }
