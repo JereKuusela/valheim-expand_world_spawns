@@ -11,7 +11,6 @@ public class Loader
 {
   public static Dictionary<SpawnSystem.SpawnData, DataEntry?> Data = [];
   public static Dictionary<SpawnSystem.SpawnData, List<BlueprintObject>> Objects = [];
-  public static Dictionary<SpawnSystem.SpawnData, Data> ExtraData = [];
   private static readonly int HashFaction = "faction".GetStableHashCode();
 
   public static SpawnSystem.SpawnData FromData(Data data, string fileName)
@@ -54,7 +53,9 @@ public class Loader
       m_outsideLava = data.outsideLava,
       m_canSpawnCloseToPlayer = data.canSpawnCloseToPlayer,
       m_insidePlayerBase = data.insidePlayerBase,
-      m_groundOffsetRandom = data.groundOffsetRandom
+      m_groundOffsetRandom = data.groundOffsetRandom,
+      m_minDistanceFromCenter = data.minDistance,
+      m_maxDistanceFromCenter = data.maxDistance,
     };
     if (spawn.m_minAltitude == -10000f)
       spawn.m_minAltitude = spawn.m_maxAltitude > 0f ? 0f : -1000f;
@@ -84,10 +85,6 @@ public class Loader
         DataHelper.Get(split.Length > 5 ? split[5] : "", fileName),
         Parse.Float(split, 4, 1f)
       )).ToList();
-    }
-    if (data.minDistance != 0f || data.maxDistance != 0f)
-    {
-      ExtraData[spawn] = data;
     }
     return spawn;
   }
@@ -131,7 +128,9 @@ public class Loader
       outsideLava = spawn.m_outsideLava,
       canSpawnCloseToPlayer = spawn.m_canSpawnCloseToPlayer,
       insidePlayerBase = spawn.m_insidePlayerBase,
-      groundOffsetRandom = spawn.m_groundOffsetRandom
+      groundOffsetRandom = spawn.m_groundOffsetRandom,
+      minDistance = spawn.m_minDistanceFromCenter,
+      maxDistance = spawn.m_maxDistanceFromCenter,
     };
     return data;
   }

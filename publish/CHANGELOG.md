@@ -1,3 +1,6 @@
+- v1.12
+  - Fixed for the new update.
+
 - v1.11
   - Fixed for the new update.
 
@@ -14,8 +17,3 @@
 
 - v1.7
   - Updated for the new Expand World Data features.
-
-- v1.6
-  - Adds a new field `name` to improve mod compatibility.
-  - Adds new fields `minDistance` and `maxDistance` to limit the spawn distance from the world center.
-  - Changes the field `enabled` to be always included in the generated config file.

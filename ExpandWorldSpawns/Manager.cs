@@ -51,7 +51,6 @@ public class Manager
 
     Loader.Data.Clear();
     Loader.Objects.Clear();
-    Loader.ExtraData.Clear();
     if (yaml == "") return;
     try
     {
@@ -118,24 +117,6 @@ public class HandleSpawnData
       system.m_spawnLists.RemoveAt(system.m_spawnLists.Count - 1);
     system.m_spawnLists[0].m_spawners = Override;
 
-  }
-}
-
-
-[HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.IsSpawnPointGood))]
-public class IsSpawnPointGood
-{
-
-  static bool Postfix(bool result, SpawnSystem.SpawnData spawn, Vector3 spawnPoint)
-  {
-    if (!result) return false;
-    if (Loader.ExtraData.TryGetValue(spawn, out var data))
-    {
-      var distance = Utils.LengthXZ(spawnPoint);
-      if (distance < data.minDistance) return false;
-      if (data.maxDistance > 0f && distance > data.maxDistance) return false;
-    }
-    return result;
   }
 }
 

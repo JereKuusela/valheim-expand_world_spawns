@@ -10,7 +10,7 @@ public class EWS : BaseUnityPlugin
 {
   public const string GUID = "expand_world_spawns";
   public const string NAME = "Expand World Spawns";
-  public const string VERSION = "1.11";
+  public const string VERSION = "1.12";
 #nullable disable
   public static ManualLogSource Log;
 #nullable enable
