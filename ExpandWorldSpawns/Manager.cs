@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using ExpandWorldData;
 using HarmonyLib;
 using Service;
@@ -125,26 +126,29 @@ public class RPC_SetGlobalKey
 {
   // This is called on creature death.
   // Adds support for incrementing the key value when "key value" is used.
-  static bool Prefix(ZoneSystem __instance, string name)
+  static void Prefix(ZoneSystem __instance, ref string name)
   {
-    var split = name.Trim().Split(' ');
-    if (split.Length < 2) return true;
-    var key = split[0].ToLower();
-    if (!int.TryParse(split[1], out var value)) return true;
-    if (__instance.m_globalKeysValues.TryGetValue(key, out var prev))
+    var key = ZoneSystem.GetKeyValue(name.ToLower(), out var value, out _);
+    if (value.StartsWith("--", StringComparison.OrdinalIgnoreCase))
     {
-      if (int.TryParse(prev, out var prevValue))
-        __instance.m_globalKeysValues[key] = (prevValue + value).ToString();
-      else
-        __instance.m_globalKeysValues[key] = split[1];
+      if (int.TryParse(value.Substring(2), out var amount))
+      {
+        if (__instance.GetGlobalKey(key, out var prev) && int.TryParse(prev, out var prevValue))
+          name = $"{key} {prevValue - amount}";
+        else
+          name = $"{key} -{amount}";
+      }
     }
-    else
+    else if (value.StartsWith("++", StringComparison.OrdinalIgnoreCase))
     {
-      __instance.m_globalKeys.Add(key);
-      __instance.m_globalKeysValues.Add(key, split[1]);
+      if (int.TryParse(value.Substring(2), out var amount))
+      {
+        if (__instance.GetGlobalKey(key, out var prev) && int.TryParse(prev, out var prevValue))
+          name = $"{key} {prevValue + amount}";
+        else
+          name = $"{key} {amount}";
+      }
     }
-    __instance.SendGlobalKeys(ZRoutedRpc.Everybody);
-    return false;
   }
 }
 
@@ -179,6 +183,19 @@ public class Spawn
     var split = critter.m_requiredGlobalKey.Trim().Split(' ');
     if (split.Length < 2) return;
     if (!int.TryParse(split[1], out var amount)) return;
-    ZoneSystem.instance.SetGlobalKey($"{split[0]} {-amount}");
+    ZoneSystem.instance.SetGlobalKey($"{split[0]} --{amount}");
   }
+}
+
+[HarmonyPatch(typeof(Character), nameof(Character.OnDeath))]
+public class HandleDeath
+{
+  static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new CodeMatcher(instructions)
+      .MatchStartForward(new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(Character), nameof(Character.m_defeatSetGlobalKey))), new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(ZoneSystem), nameof(ZoneSystem.SetGlobalKey), [typeof(string)])))
+      .Advance(1)
+      .Insert(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HandleDeath), nameof(ConvertKey))))
+      .InstructionEnumeration();
+
+
+  static string ConvertKey(string key) => $"{key} ++1";
 }

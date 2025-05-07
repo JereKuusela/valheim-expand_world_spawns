@@ -41,7 +41,7 @@ Note: All distances are in meters, and don't scale up with the world size. For b
   - When using format `key value`, the key must have at least this amount of value.
   - After spawning, the key value is reduced by the required value.
   - This can be used to create limited spawns.
-  - Creature deaths can be used to increase the key value by also using the format `key value`.
+  - Creature deaths automatically increase the key value by 1 if they have defeated key set.
 - requiredEnvironments: List of valid environments/weathers.
 - spawnDistance (default: `10` meters): Distance to suppress similar spawns.
 - spawnRadiusMin (default: `40` meters): Minimum distance from every player.

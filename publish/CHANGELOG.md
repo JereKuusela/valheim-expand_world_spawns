@@ -1,3 +1,6 @@
+- v1.13
+  - Fixes the global key counting interfering with world modifiers and other key related features.
+
 - v1.12
   - Fixed for the new update.
 
@@ -9,11 +12,3 @@
 
 - v1.9
   - Fixes the field `faction` not working.
-
-- v1.8
-  - Adds new fields for spawns.
-  - Adds global key value support to the field `requiredGlobalKey`.
-  - Fixed for the new game version.
-
-- v1.7
-  - Updated for the new Expand World Data features.
