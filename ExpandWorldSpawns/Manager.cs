@@ -186,16 +186,3 @@ public class Spawn
     ZoneSystem.instance.SetGlobalKey($"{split[0]} --{amount}");
   }
 }
-
-[HarmonyPatch(typeof(Character), nameof(Character.OnDeath))]
-public class HandleDeath
-{
-  static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new CodeMatcher(instructions)
-      .MatchStartForward(new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(Character), nameof(Character.m_defeatSetGlobalKey))), new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(ZoneSystem), nameof(ZoneSystem.SetGlobalKey), [typeof(string)])))
-      .Advance(1)
-      .Insert(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HandleDeath), nameof(ConvertKey))))
-      .InstructionEnumeration();
-
-
-  static string ConvertKey(string key) => $"{key} ++1";
-}

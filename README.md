@@ -41,7 +41,8 @@ Note: All distances are in meters, and don't scale up with the world size. For b
   - When using format `key value`, the key must have at least this amount of value.
   - After spawning, the key value is reduced by the required value.
   - This can be used to create limited spawns.
-  - Creature deaths automatically increase the key value by 1 if they have defeated key set.
+  - Creature deaths can be changed to increase the key value by using the `defeatSetGlobalKey` field.
+  - See the [Fields](#fields) section for more info.
 - requiredEnvironments: List of valid environments/weathers.
 - spawnDistance (default: `10` meters): Distance to suppress similar spawns.
 - spawnRadiusMin (default: `40` meters): Minimum distance from every player.
@@ -66,11 +67,39 @@ Note: All distances are in meters, and don't scale up with the world size. For b
 - overrideLevelupChance (default: `-1` percent): Chance per level up (from the default 10%).
 - faction: Name of the faction. Requires using Expand World Factions.
 - data: ZDO data override.
+- fields: Custom fields to override prefab properties.
+  - See the [Fields](#fields) section for more info.
 - objects: Extra objects to spawn. Spawned on top of any obstacles. The spawning is skipped if 10 meters above the original position. Format is `id,posX,posZ,posY,chance,data`.
   - id: Prefab name.
   - posX, posZ, posY: Offset from the location position. Defalt is 0.
   - chance: Chance to spawn (from 0 to 1). Default is 1.
   - data: ZDO data override.
+
+## Fields
+
+Fields can be used to override prefab properties.
+
+You can hover a creature and use `data dump=check` from World Edit Commands mod to print available fields to `config/data/data.yaml` file.
+
+```yaml
+- prefab: Troll
+  ...
+  fields:
+    # Adds kill count tracking for trolls.
+    defeatSetGlobalKey: killedtroll ++1
+- prefab: Troll
+  ...
+  # Spawning consumes 10 troll kills.
+  requiredGlobalKey: killedtroll 10
+  fields:
+    boss: true
+    name: Troll King
+    bossEvent: foresttrolls
+    health: 1000
+    runSpeed: 8
+    # "damage" is converted to "RandomSkillFactor", provided for convenience.
+    damage: 2
+```
 
 ## Credits
 

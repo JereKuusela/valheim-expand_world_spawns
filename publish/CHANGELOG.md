@@ -1,3 +1,7 @@
+- v1.14
+  - Adds support for data fields to allow customizing creature properties.
+  - Removes the automatic kill counting system (incompatible with World Advancement Progression mod).
+
 - v1.13
   - Fixes the global key counting interfering with world modifiers and other key related features.
 
