@@ -180,6 +180,7 @@ public class Spawn
   // After spawn, consume the required amount of global key.
   static void Postfix(SpawnSystem.SpawnData critter)
   {
+    if (string.IsNullOrEmpty(critter.m_requiredGlobalKey)) return;
     var split = critter.m_requiredGlobalKey.Trim().Split(' ');
     if (split.Length < 2) return;
     if (!int.TryParse(split[1], out var amount)) return;

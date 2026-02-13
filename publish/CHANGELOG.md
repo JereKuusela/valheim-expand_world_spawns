@@ -1,3 +1,6 @@
+- v1.15
+  - Fixes error when set defeated key for a creatue was null (for example RTDMMO).
+
 - v1.14
   - Adds support for data fields to allow customizing creature properties.
   - Removes the automatic kill counting system (incompatible with World Advancement Progression mod).
@@ -10,9 +13,3 @@
 
 - v1.11
   - Fixed for the new update.
-
-- v1.10
-  - Improves the config loading to show the actual file and row numbers when an error occurs.
-
-- v1.9
-  - Fixes the field `faction` not working.
