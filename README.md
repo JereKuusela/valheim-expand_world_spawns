@@ -101,6 +101,8 @@ You can hover a creature and use `data dump=check` from World Edit Commands mod 
     damage: 2
 ```
 
+The mod attempts to find the correct component and data type automatically. If this doesn't work, you can manually specify the component by using format `component.field` (for example `Character.m_boss`) or the data type by using format `type.key` (for example `float.health`).
+
 ## Credits
 
 Thanks for Azumatt for creating the mod icon!

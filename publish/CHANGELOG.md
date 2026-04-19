@@ -1,5 +1,8 @@
+- v1.16
+  - Improves the data system to support more types and formats.
+
 - v1.15
-  - Fixes error when set defeated key for a creatue was null (for example RTDMMO).
+  - Fixes error when set defeated key for a creature was null (for example RTDMMO).
 
 - v1.14
   - Adds support for data fields to allow customizing creature properties.
