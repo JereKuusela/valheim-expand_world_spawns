@@ -144,7 +144,8 @@ public class LoaderFields
             }
             else
             {
-              componentFields[c] ??= [];
+              if (!componentFields.ContainsKey(c))
+                componentFields[c] = [];
               // If component is explicitly set, assume that the field is also exact.
               componentFields[c][split[1]] = kvp.Value;
             }
