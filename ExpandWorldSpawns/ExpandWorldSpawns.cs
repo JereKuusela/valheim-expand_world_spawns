@@ -11,7 +11,7 @@ public class EWS : BaseUnityPlugin
 {
   public const string GUID = "expand_world_spawns";
   public const string NAME = "Expand World Spawns";
-  public const string VERSION = "1.16";
+  public const string VERSION = "1.16.1";
 #nullable disable
   public static ManualLogSource Log;
 #nullable enable
@@ -36,6 +36,7 @@ public class EWS : BaseUnityPlugin
       if (ExpandWorldData.Configuration.DataReload)
       {
         Spawn.Manager.SetupWatcher();
+        Drops.Loader.SetupWatcher();
       }
     }
     catch (Exception e)

@@ -9,6 +9,8 @@ public class Data
   [DefaultValue("")]
   public string name = "";
   [DefaultValue("")]
+  public string drops = "";
+  [DefaultValue("")]
   public string biome = "";
   [DefaultValue("")]
   public string biomeArea = "";

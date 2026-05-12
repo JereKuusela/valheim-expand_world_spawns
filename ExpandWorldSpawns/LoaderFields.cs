@@ -16,7 +16,8 @@ public class LoaderFields
     HashDamage,
     ZDOVars.s_health,
     ZDOVars.s_maxHealth,
-    ZDOVars.s_noise
+    ZDOVars.s_noise,
+    ZDOVars.s_scaleScalarHash,
   ];
   private static readonly HashSet<int> KnownInts =
   [
@@ -49,7 +50,8 @@ public class LoaderFields
   [
     ZDOVars.s_bodyVelocity,
     ZDOVars.s_spawnPoint,
-    ZDOVars.s_patrolPoint
+    ZDOVars.s_patrolPoint,
+    ZDOVars.s_scaleHash
   ];
   private static readonly HashSet<int> KnownStrings =
   [
@@ -65,6 +67,12 @@ public class LoaderFields
       customData ??= new();
       customData.Strings ??= [];
       customData.Strings[HashFaction] = DataValue.Simple(data.faction);
+    }
+    if (data.drops != null)
+    {
+      customData ??= new();
+      customData.Hashes ??= [];
+      customData.Hashes[Drops.Manager.HashDrop] = DataValue.Hash(data.drops);
     }
     if (data.fields != null)
     {

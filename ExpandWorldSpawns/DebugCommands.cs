@@ -11,5 +11,9 @@ public class SetCommands
 {
   Spawn.Manager.Save();
 }, true);
+    new Terminal.ConsoleCommand("ew_drops", "Forces drop file creation.", (args) =>
+{
+  Drops.ReferenceFileGenerator.Save();
+}, true);
   }
 }
