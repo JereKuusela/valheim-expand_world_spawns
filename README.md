@@ -103,6 +103,62 @@ You can hover a creature and use `data dump=check` from World Edit Commands mod 
 
 The mod attempts to find the correct component and data type automatically. If this doesn't work, you can manually specify the component by using format `component.field` (for example `Character.m_boss`) or the data type by using format `type.key` (for example `float.health`).
 
+## Drop data
+
+The mod can override item and resource drops on existing objects by loading custom drop definitions from `expand_world/expand_drops.yaml`. The reference file `expand_world/ref_expand_drops.yaml` is generated automatically the first time the world loads.
+
+Custom drop can be attached to most objects that drop or contain items.
+
+Drops can be applied by setting `drops` field in `expand_spawns.yaml` or by directly setting `ews_drops` data with hash of the drop definition. Expand World Data mod also supports `drops` field.
+
+Drop table is saved as reference. This means that changes to the drop definition retroactively affect existing objects.
+
+```yaml
+- name: troll_loot
+  minAmount: 1
+  maxAmount: 2
+  chance: 1
+  oneOfEach: false
+  drops:
+    - prefab: Coins
+      minAmount: 1
+      maxAmount: 5
+      chance: 0.75
+      minStack: 1
+      maxStack: 10
+      weight: 1
+    - prefab: Leather
+      minAmount: 1
+      maxAmount: 3
+      chance: 0.5
+      onePerPlayer: false
+      levelMultiplier: false
+      minStack: 1
+      maxStack: 1
+      weight: 2
+```
+
+### Drop fields
+
+- name: Identifier used to register the drop data.
+- minAmount (default: `1`): Minimum amount of items to drop.
+- maxAmount (default: `1`): Maximum amount of items to drop.
+- chance (default: `1`): Drop chance for the whole drop table.
+- oneOfEach (default: `false`): Each drop entry is picked at most once.
+- drops: List of individual drops.
+  - prefab: Item or object prefab name.
+  - minAmount (default: `1`): Minimum count for this entry.
+  - maxAmount (default: `1`): Maximum count for this entry.
+  - chance (default: `1`): Chance for this individual item entry.
+  - onePerPlayer (default: `false`): Only one drop per player.
+  - levelMultiplier (default: `false`): Scale item count by creature level.
+  - minStack (default: `1`): Minimum stack size for stackable items.
+  - maxStack (default: `1`): Maximum stack size for stackable items.
+  - weight (default: `1`): Drop-selection weight used by the table.
+  - amount (default: `1`): Legacy amount override for some item types.
+  - recover (default: `true`): Whether the drop is recoverable.
+  - dontScale (default: `false`): Keep the drop size unscaled.
+
 ## Credits
 
 Thanks for Azumatt for creating the mod icon!

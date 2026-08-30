@@ -1,3 +1,6 @@
+- v1.17
+  - Adds experimental drop data support.
+
 - v1.16
   - Improves the data system to support more types and formats.
 
@@ -10,9 +13,3 @@
 
 - v1.13
   - Fixes the global key counting interfering with world modifiers and other key related features.
-
-- v1.12
-  - Fixed for the new update.
-
-- v1.11
-  - Fixed for the new update.
