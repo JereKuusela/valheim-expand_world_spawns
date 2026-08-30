@@ -23,7 +23,7 @@ Note: All distances are in meters, and don't scale up with the world size. For b
 - prefab: Name of the object to spawn.
   - Any [object](https://valheim.fandom.com/wiki/Item_IDs) is valid, not just creatures.
 - name: Identifier for this entry, only needed for mod compatibility.
-- enabled (default: `true`): Quick way to disable this entry if needede.
+- enabled (default: `true`): Quick way to disable this entry if needed.
 - biome: List of possible biomes.
 - biomeArea: List of possible biome areas (edge = zones with multiple biomes, median = zones with only a single biome, 4 = unused, leftover from Valheim data).
 - spawnChance (default: `100` %): Chance to spawn when attempted.
@@ -158,6 +158,15 @@ Drop table is saved as reference. This means that changes to the drop definition
   - amount (default: `1`): Legacy amount override for some item types.
   - recover (default: `true`): Whether the drop is recoverable.
   - dontScale (default: `false`): Keep the drop size unscaled.
+
+## Debug Commands
+
+Console commands for testing and managing spawns:
+
+- `ew_spawns` — Forces creation of the spawn configuration file (`expand_world/expand_spawns.yaml`).
+- `ew_drops` — Forces creation of the drop configuration file (`expand_world/ref_expand_drops.yaml`).
+- `ew_test_spawn <name>` — Spawns a creature from the spawn system by entry name. Ignores spawn restrictions.
+- `ew_try_spawn <name>` — Attempts to spawn a creature with modified settings (close to player, minimal radius, instant interval). Tests if spawning works correctly.
 
 ## Credits
 
