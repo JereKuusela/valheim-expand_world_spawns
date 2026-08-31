@@ -40,6 +40,14 @@ public static class ReferenceFileGenerator
     if (piece != null)
       return ToPieceData(prefab.name, piece);
 
+    var treeBase = prefab.GetComponent<TreeBase>();
+    if (treeBase != null)
+      return ToTreeBaseData(prefab.name, treeBase);
+
+    var treeLog = prefab.GetComponent<TreeLog>();
+    if (treeLog != null)
+      return ToTreeLogData(prefab.name, treeLog);
+
     if (TryGetDropTable(prefab, out var table))
       return ToDropTableData(prefab.name, table);
 
@@ -97,20 +105,6 @@ public static class ReferenceFileGenerator
       return true;
     }
 
-    var treeBase = prefab.GetComponent<TreeBase>();
-    if (treeBase != null && treeBase.m_dropWhenDestroyed != null)
-    {
-      table = treeBase.m_dropWhenDestroyed;
-      return true;
-    }
-
-    var treeLog = prefab.GetComponent<TreeLog>();
-    if (treeLog != null && treeLog.m_dropWhenDestroyed != null)
-    {
-      table = treeLog.m_dropWhenDestroyed;
-      return true;
-    }
-
     table = null!;
     return false;
   }
@@ -152,8 +146,10 @@ public static class ReferenceFileGenerator
     };
   }
 
-  private static Data ToDropTableData(string name, DropTable table)
+  private static Data ToDropTableData(string name, DropTable? table)
   {
+    if (table == null)
+      return new Data { name = name };
     return new Data
     {
       name = name,
@@ -172,5 +168,20 @@ public static class ReferenceFileGenerator
           weight = drop.m_weight,
         })],
     };
+  }
+
+  private static Data ToTreeBaseData(string name, TreeBase treeBase)
+  {
+    var data = ToDropTableData(name, treeBase.m_dropWhenDestroyed);
+    data.log = treeBase.m_logPrefab != null ? treeBase.m_logPrefab.name : "none";
+    data.stump = treeBase.m_stubPrefab != null ? treeBase.m_stubPrefab.name : "none";
+    return data;
+  }
+
+  private static Data ToTreeLogData(string name, TreeLog treeLog)
+  {
+    var data = ToDropTableData(name, treeLog.m_dropWhenDestroyed);
+    data.log = treeLog.m_subLogPrefab != null ? treeLog.m_subLogPrefab.name : "none";
+    return data;
   }
 }

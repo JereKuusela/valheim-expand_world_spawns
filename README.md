@@ -147,6 +147,8 @@ Drop table is saved as reference. This means that changes to the drop definition
 - oneOfEach (default: `false`): Each drop entry is picked at most once.
 - biome: List of possible biomes. If the object isn't in a matching biome, the whole override is skipped (vanilla drops apply).
 - biomeArea: List of possible biome areas (edge = zones with multiple biomes, median = zones with only a single biome).
+- log: Overrides the log prefab when a tree is chopped down or a log is destroyed. Use `none` to prevent the log (and any stump) from spawning at all.
+- stump: Overrides the stump when a tree is chopped down. Use `none` to prevent a stump from spawning.
 - drops: List of individual drops.
   - prefab: Item or object prefab name.
   - minAmount (default: `1`): Minimum count for this entry.

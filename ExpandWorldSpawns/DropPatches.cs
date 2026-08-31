@@ -140,10 +140,28 @@ public static class DropTablePatches
     Apply(__instance.m_dropWhenDestroyed, data, __instance.transform.position);
   }
 
+  [HarmonyPatch(typeof(TreeBase), nameof(TreeBase.SpawnLog)), HarmonyPrefix]
+  static bool TreeBaseSpawnLog(TreeBase __instance)
+  {
+    if (!Manager.TryGetData(__instance.m_nview, out var data)) return true;
+    if (!Manager.Matches(data.biomes, data.biomeAreas, __instance.transform.position)) return true;
+    // "none" cancels the log (and stump) spawn entirely instead of replacing the prefab.
+    if (data.logNone) return false;
+    if (data.logObj != null) __instance.m_logPrefab = data.logObj;
+    if (data.stumpNone) __instance.m_stubPrefab = null;
+    else if (data.stumpObj != null) __instance.m_stubPrefab = data.stumpObj;
+    return true;
+  }
+
   [HarmonyPatch(typeof(TreeLog), nameof(TreeLog.Destroy)), HarmonyPrefix]
   static void TreeLogDestroy(TreeLog __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
+    if (Manager.Matches(data.biomes, data.biomeAreas, __instance.transform.position))
+    {
+      if (data.logNone) __instance.m_subLogPrefab = null;
+      else if (data.logObj != null) __instance.m_subLogPrefab = data.logObj;
+    }
     Apply(__instance.m_dropWhenDestroyed, data, __instance.transform.position);
   }
 

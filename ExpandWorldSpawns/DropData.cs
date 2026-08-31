@@ -20,9 +20,20 @@ public class Data
   [DefaultValue("")]
   public string biomeArea = "";
 
+  [DefaultValue("")]
+  public string log = "";
+  [DefaultValue("")]
+  public string stump = "";
+
   // Parsed from biome/biomeArea, not serialized.
   internal Heightmap.Biome biomes = 0;
   internal Heightmap.BiomeArea biomeAreas = 0;
+
+  internal GameObject? logObj = null;
+  internal GameObject? stumpObj = null;
+  // True when log/stump is set to "none", meaning nothing should spawn at all.
+  internal bool logNone = false;
+  internal bool stumpNone = false;
 
   public DropEntry[] drops = [];
 }
@@ -31,8 +42,8 @@ public class DropEntry
 {
   public string prefab = "";
 
-  public GameObject? obj = null;
-  public ItemDrop? item = null;
+  internal GameObject? obj = null;
+  internal ItemDrop? item = null;
 
   [DefaultValue(1)]
   public int minAmount = 1;
