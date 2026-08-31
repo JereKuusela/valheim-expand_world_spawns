@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
+using UnityEngine;
 
 namespace ExpandWorld.Drops;
 
@@ -12,6 +13,12 @@ public class Manager
   public static Dictionary<int, Data> DataByHash = [];
   public static Dictionary<string, Data> DataByName = [];
 
+  public static bool Matches(Heightmap.Biome biomes, Heightmap.BiomeArea areas, Vector3 pos)
+  {
+    var biome = WorldGenerator.instance.GetBiome(pos);
+    var area = WorldGenerator.instance.GetBiomeArea(pos);
+    return biomes.HasFlag(biome) && areas.HasFlag(area);
+  }
 
   public static void Add(Data data)
   {

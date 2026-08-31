@@ -15,6 +15,14 @@ public class Data
   public float chance = 1f;
   [DefaultValue(false)]
   public bool oneOfEach = false;
+  [DefaultValue("")]
+  public string biome = "";
+  [DefaultValue("")]
+  public string biomeArea = "";
+
+  // Parsed from biome/biomeArea, not serialized.
+  internal Heightmap.Biome biomes = 0;
+  internal Heightmap.BiomeArea biomeAreas = 0;
 
   public DropEntry[] drops = [];
 }
@@ -51,4 +59,13 @@ public class DropEntry
 
   [DefaultValue(false)]
   public bool dontScale = false;
+
+  [DefaultValue("")]
+  public string biome = "";
+  [DefaultValue("")]
+  public string biomeArea = "";
+
+  // Parsed from biome/biomeArea, not serialized.
+  internal Heightmap.Biome biomes = 0;
+  internal Heightmap.BiomeArea biomeAreas = 0;
 }

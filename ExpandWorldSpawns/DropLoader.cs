@@ -45,11 +45,15 @@ public class Loader
   // No mapping needed.
   public static Data FromData(Data data, string fileName)
   {
+    data.biomes = DataManager.ToBiomes(data.biome, fileName);
+    data.biomeAreas = DataManager.ToBiomeAreas(data.biomeArea, fileName);
     foreach (var drop in data.drops)
     {
       drop.obj = DataManager.ToPrefab(drop.prefab, fileName);
       if (drop.obj)
         drop.item = drop.obj.GetComponent<ItemDrop>();
+      drop.biomes = DataManager.ToBiomes(drop.biome, fileName);
+      drop.biomeAreas = DataManager.ToBiomeAreas(drop.biomeArea, fileName);
     }
     return data;
   }

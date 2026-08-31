@@ -15,12 +15,13 @@ public static class CharacterDropPatches
   static void CharacterDropGenerateDropList(CharacterDrop __instance)
   {
     if (!Manager.TryGetData(__instance.m_character.m_nview, out var data)) return;
-    Apply(__instance, data);
+    Apply(__instance, data, __instance.transform.position);
   }
 
-  private static void Apply(CharacterDrop drop, Data data)
+  private static void Apply(CharacterDrop drop, Data data, Vector3 pos)
   {
-    drop.m_drops = [.. data.drops.Select(d => new CharacterDrop.Drop
+    if (!Manager.Matches(data.biomes, data.biomeAreas, pos)) return;
+    drop.m_drops = [.. data.drops.Where(d => Manager.Matches(d.biomes, d.biomeAreas, pos)).Select(d => new CharacterDrop.Drop
     {
       m_prefab = d.obj,
       m_chance = d.chance,
@@ -42,12 +43,13 @@ public static class PieceRequirementPatches
   static void PieceDropResources(Piece __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance, data);
+    Apply(__instance, data, __instance.transform.position);
   }
 
-  private static void Apply(Piece piece, Data data)
+  private static void Apply(Piece piece, Data data, Vector3 pos)
   {
-    piece.m_resources = [.. data.drops.Where(d => d.item != null).Select(d => new Piece.Requirement
+    if (!Manager.Matches(data.biomes, data.biomeAreas, pos)) return;
+    piece.m_resources = [.. data.drops.Where(d => d.item != null && Manager.Matches(d.biomes, d.biomeAreas, pos)).Select(d => new Piece.Requirement
     {
       m_amount = Random.Range(d.minAmount, d.maxAmount + 1),
       m_resItem = d.item,
@@ -66,28 +68,28 @@ public static class DropTablePatches
   static void ContainerAddDefaultItems(Container __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_defaultItems, data);
+    Apply(__instance.m_defaultItems, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(FishingFloat), nameof(FishingFloat.Catch)), HarmonyPrefix]
   static void FishingFloatCatch(Fish fish)
   {
     if (!Manager.TryGetData(fish.m_nview, out var data)) return;
-    Apply(fish.m_extraDrops, data);
+    Apply(fish.m_extraDrops, data, fish.transform.position);
   }
 
   [HarmonyPatch(typeof(Pickable), nameof(Pickable.RPC_Pick)), HarmonyPrefix]
   static void PickableRPC_Pick(Pickable __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_extraDrops, data);
+    Apply(__instance.m_extraDrops, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(DropOnDestroyed), nameof(DropOnDestroyed.OnDestroyed)), HarmonyPrefix]
   static void DropOnDestroyedOnDestroyed(DropOnDestroyed __instance)
   {
     if (!Manager.TryGetData(__instance.GetComponent<ZNetView>(), out var data)) return;
-    Apply(__instance.m_dropWhenDestroyed, data);
+    Apply(__instance.m_dropWhenDestroyed, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(LootSpawner), nameof(LootSpawner.UpdateSpawner)), HarmonyTranspiler]
@@ -99,7 +101,7 @@ public static class DropTablePatches
   static void ApplyDrops(LootSpawner __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_items, data);
+    Apply(__instance.m_items, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(MineRock), nameof(MineRock.RPC_Hit)), HarmonyTranspiler]
@@ -111,7 +113,7 @@ public static class DropTablePatches
   static void ApplyDrops(MineRock __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_dropItems, data);
+    Apply(__instance.m_dropItems, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(MineRock5), nameof(MineRock5.DamageArea)), HarmonyTranspiler]
@@ -123,7 +125,7 @@ public static class DropTablePatches
   static void ApplyDrops(MineRock5 __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_dropItems, data);
+    Apply(__instance.m_dropItems, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(TreeBase), nameof(TreeBase.RPC_Damage)), HarmonyTranspiler]
@@ -135,24 +137,25 @@ public static class DropTablePatches
   static void ApplyDrops(TreeBase __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_dropWhenDestroyed, data);
+    Apply(__instance.m_dropWhenDestroyed, data, __instance.transform.position);
   }
 
   [HarmonyPatch(typeof(TreeLog), nameof(TreeLog.Destroy)), HarmonyPrefix]
   static void TreeLogDestroy(TreeLog __instance)
   {
     if (!Manager.TryGetData(__instance.m_nview, out var data)) return;
-    Apply(__instance.m_dropWhenDestroyed, data);
+    Apply(__instance.m_dropWhenDestroyed, data, __instance.transform.position);
   }
 
 
-  private static void Apply(DropTable dropTable, Data data)
+  private static void Apply(DropTable dropTable, Data data, Vector3 pos)
   {
+    if (!Manager.Matches(data.biomes, data.biomeAreas, pos)) return;
     dropTable.m_dropChance = data.chance;
     dropTable.m_oneOfEach = data.oneOfEach;
     dropTable.m_dropMax = data.maxAmount;
     dropTable.m_dropMin = data.minAmount;
-    dropTable.m_drops = [.. data.drops.Select(d => new DropTable.DropData
+    dropTable.m_drops = [.. data.drops.Where(d => Manager.Matches(d.biomes, d.biomeAreas, pos)).Select(d => new DropTable.DropData
     {
       m_dontScale = d.dontScale,
       m_item = d.obj,

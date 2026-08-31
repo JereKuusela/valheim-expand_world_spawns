@@ -145,6 +145,8 @@ Drop table is saved as reference. This means that changes to the drop definition
 - maxAmount (default: `1`): Maximum amount of items to drop.
 - chance (default: `1`): Drop chance for the whole drop table.
 - oneOfEach (default: `false`): Each drop entry is picked at most once.
+- biome: List of possible biomes. If the object isn't in a matching biome, the whole override is skipped (vanilla drops apply).
+- biomeArea: List of possible biome areas (edge = zones with multiple biomes, median = zones with only a single biome).
 - drops: List of individual drops.
   - prefab: Item or object prefab name.
   - minAmount (default: `1`): Minimum count for this entry.
@@ -158,6 +160,8 @@ Drop table is saved as reference. This means that changes to the drop definition
   - amount (default: `1`): Legacy amount override for some item types.
   - recover (default: `true`): Whether the drop is recoverable.
   - dontScale (default: `false`): Keep the drop size unscaled.
+  - biome: List of possible biomes. If the object isn't in a matching biome, this entry is excluded from the roll.
+  - biomeArea: List of possible biome areas (edge = zones with multiple biomes, median = zones with only a single biome).
 
 ## Debug Commands
 
