@@ -1,6 +1,7 @@
 - v1.18
   - Adds biome filtering to drop definitions.
   - Adds log and stump overrides for tree drops.
+  - Fixes for the new update.
 
 - v1.17
   - Adds experimental drop data support.

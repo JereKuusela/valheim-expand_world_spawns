@@ -6,12 +6,12 @@ using Service;
 namespace ExpandWorld;
 
 [BepInPlugin(GUID, NAME, VERSION)]
-[BepInDependency("expand_world_data", "1.70")]
+[BepInDependency("expand_world_data", "1.71")]
 public class EWS : BaseUnityPlugin
 {
   public const string GUID = "expand_world_spawns";
   public const string NAME = "Expand World Spawns";
-  public const string VERSION = "1.17.2";
+  public const string VERSION = "1.18";
 #nullable disable
   public static ManualLogSource Log;
 #nullable enable
